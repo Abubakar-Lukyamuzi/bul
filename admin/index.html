@@ -19,7 +19,7 @@
     }
     
     .container {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       background: white;
       border-radius: 10px;
@@ -45,7 +45,7 @@
     
     .content {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 0;
     }
     
@@ -108,6 +108,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
+      width: 100%;
     }
     
     button:hover {
@@ -123,6 +124,8 @@
       margin-top: 30px;
       border-top: 2px solid #eee;
       padding-top: 20px;
+      max-height: 600px;
+      overflow-y: auto;
     }
     
     .item {
@@ -136,11 +139,20 @@
     .item h3 {
       color: #333;
       margin-bottom: 8px;
+      font-size: 14px;
     }
     
     .item p {
       color: #666;
-      font-size: 14px;
+      font-size: 13px;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    
+    .item img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 3px;
       margin-bottom: 10px;
     }
     
@@ -153,10 +165,24 @@
       background: #e74c3c;
       padding: 8px 16px;
       font-size: 12px;
+      width: auto;
+      flex: 1;
+    }
+    
+    .btn-edit {
+      background: #3498db;
+      padding: 8px 16px;
+      font-size: 12px;
+      width: auto;
+      flex: 1;
     }
     
     .btn-delete:hover {
       box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+    }
+    
+    .btn-edit:hover {
+      box-shadow: 0 5px 20px rgba(52, 152, 219, 0.4);
     }
     
     .success-msg {
@@ -166,10 +192,22 @@
       border-radius: 5px;
       margin-bottom: 20px;
       display: none;
+      font-size: 14px;
     }
     
     .success-msg.show {
       display: block;
+    }
+    
+    @media (max-width: 1200px) {
+      .content {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .section:nth-child(2) {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+      }
     }
     
     @media (max-width: 768px) {
@@ -192,7 +230,7 @@
   <div class="container">
     <div class="header">
       <h1>🌾 BULMUCOS Admin Panel</h1>
-      <p>Manage Updates & Products</p>
+      <p>Manage Updates, Products & Gallery</p>
     </div>
     
     <div class="content">
@@ -240,6 +278,31 @@
         
         <div class="items-list" id="products-list"></div>
       </div>
+      
+      <!-- Gallery Section -->
+      <div class="section">
+        <h2>🖼️ Gallery</h2>
+        <div class="success-msg" id="gallery-success">Gallery item added successfully!</div>
+        
+        <div class="form-group">
+          <label for="gallery-title">Title</label>
+          <input type="text" id="gallery-title" placeholder="Enter gallery item title">
+        </div>
+        
+        <div class="form-group">
+          <label for="gallery-description">Description</label>
+          <textarea id="gallery-description" placeholder="Enter gallery item description"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="gallery-image">Image URL</label>
+          <input type="text" id="gallery-image" placeholder="e.g., /images/sacks.png">
+        </div>
+        
+        <button onclick="addGallery()">Add Gallery Item</button>
+        
+        <div class="items-list" id="gallery-list"></div>
+      </div>
     </div>
   </div>
   
@@ -248,9 +311,10 @@
     function loadData() {
       renderUpdates();
       renderProducts();
+      renderGallery();
     }
     
-    // Add Update
+    // ===== UPDATES FUNCTIONS =====
     function addUpdate() {
       const title = document.getElementById('update-title').value.trim();
       const content = document.getElementById('update-content').value.trim();
@@ -270,19 +334,16 @@
       
       localStorage.setItem('bulmucos_updates', JSON.stringify(updates));
       
-      // Show success message
       const msg = document.getElementById('updates-success');
       msg.classList.add('show');
       setTimeout(() => msg.classList.remove('show'), 3000);
       
-      // Clear form
       document.getElementById('update-title').value = '';
       document.getElementById('update-content').value = '';
       
       renderUpdates();
     }
     
-    // Delete Update
     function deleteUpdate(id) {
       if (confirm('Are you sure?')) {
         const updates = JSON.parse(localStorage.getItem('bulmucos_updates') || '[]');
@@ -292,7 +353,6 @@
       }
     }
     
-    // Render Updates
     function renderUpdates() {
       const updates = JSON.parse(localStorage.getItem('bulmucos_updates') || '[]');
       const list = document.getElementById('updates-list');
@@ -314,7 +374,7 @@
       `).join('');
     }
     
-    // Add Product
+    // ===== PRODUCTS FUNCTIONS =====
     function addProduct() {
       const name = document.getElementById('product-name').value.trim();
       const description = document.getElementById('product-description').value.trim();
@@ -335,12 +395,10 @@
       
       localStorage.setItem('bulmucos_products', JSON.stringify(products));
       
-      // Show success message
       const msg = document.getElementById('products-success');
       msg.classList.add('show');
       setTimeout(() => msg.classList.remove('show'), 3000);
       
-      // Clear form
       document.getElementById('product-name').value = '';
       document.getElementById('product-description').value = '';
       document.getElementById('product-image').value = '';
@@ -348,7 +406,6 @@
       renderProducts();
     }
     
-    // Delete Product
     function deleteProduct(id) {
       if (confirm('Are you sure?')) {
         const products = JSON.parse(localStorage.getItem('bulmucos_products') || '[]');
@@ -358,7 +415,6 @@
       }
     }
     
-    // Render Products
     function renderProducts() {
       const products = JSON.parse(localStorage.getItem('bulmucos_products') || '[]');
       const list = document.getElementById('products-list');
@@ -374,6 +430,68 @@
           <p>${p.description}</p>
           <div class="item-actions">
             <button class="btn-delete" onclick="deleteProduct(${p.id})">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // ===== GALLERY FUNCTIONS =====
+    function addGallery() {
+      const title = document.getElementById('gallery-title').value.trim();
+      const description = document.getElementById('gallery-description').value.trim();
+      const image = document.getElementById('gallery-image').value.trim();
+      
+      if (!title || !description || !image) {
+        alert('Please fill in all fields');
+        return;
+      }
+      
+      const gallery = JSON.parse(localStorage.getItem('bulmucos_gallery') || '[]');
+      gallery.unshift({
+        id: Date.now(),
+        title,
+        description,
+        image
+      });
+      
+      localStorage.setItem('bulmucos_gallery', JSON.stringify(gallery));
+      
+      const msg = document.getElementById('gallery-success');
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 3000);
+      
+      document.getElementById('gallery-title').value = '';
+      document.getElementById('gallery-description').value = '';
+      document.getElementById('gallery-image').value = '';
+      
+      renderGallery();
+    }
+    
+    function deleteGallery(id) {
+      if (confirm('Are you sure?')) {
+        const gallery = JSON.parse(localStorage.getItem('bulmucos_gallery') || '[]');
+        const filtered = gallery.filter(g => g.id !== id);
+        localStorage.setItem('bulmucos_gallery', JSON.stringify(filtered));
+        renderGallery();
+      }
+    }
+    
+    function renderGallery() {
+      const gallery = JSON.parse(localStorage.getItem('bulmucos_gallery') || '[]');
+      const list = document.getElementById('gallery-list');
+      
+      if (gallery.length === 0) {
+        list.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">No gallery items yet</p>';
+        return;
+      }
+      
+      list.innerHTML = gallery.map(g => `
+        <div class="item">
+          <img src="${g.image}" alt="${g.title}" style="max-width: 100%; height: auto;">
+          <h3>${g.title}</h3>
+          <p>${g.description}</p>
+          <div class="item-actions">
+            <button class="btn-delete" onclick="deleteGallery(${g.id})">Delete</button>
           </div>
         </div>
       `).join('');
