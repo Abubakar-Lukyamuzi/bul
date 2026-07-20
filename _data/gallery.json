@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Community funded",
+    "description": "Some of the Cooperative's coffee bags contributed by members to run the day to day activities of the cooperative.",
+    "image": "/images/sacks.png"
+  },
+  {
+    "title": "Internationally Eyed",
+    "description": "Financed by UNDP and the Government of Uganda through UGACOF to build a solar dryer for our farmers.",
+    "image": "/images/post.JPG"
+  },
+  {
+    "title": "Extension services",
+    "description": "Meeting with community members to discuss about circular agriculture.",
+    "image": "/images/modulate.png"
+  },
+  {
+    "title": "Solar Dryer",
+    "description": "For members' produce to reduce post harvest losses due to weather conditions and improve quality of the produce by avoiding drying produce on the ground.",
+    "image": "/images/solar dryer.jpg"
+  }
+]
