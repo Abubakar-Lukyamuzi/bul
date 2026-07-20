@@ -1,12 +1,386 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex" />
-  <title>BULMUCOS - Content Manager</title>
-  <script src="https://unpkg.com/netlify-cms@^2.10.192/dist/netlify-cms.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BULMUCOS - Admin Panel</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      opacity: 0.9;
+    }
+    
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    
+    .section {
+      padding: 30px;
+      border-right: 1px solid #eee;
+    }
+    
+    .section:last-child {
+      border-right: none;
+    }
+    
+    .section h2 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 1.5em;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 10px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 600;
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-family: inherit;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    .items-list {
+      margin-top: 30px;
+      border-top: 2px solid #eee;
+      padding-top: 20px;
+    }
+    
+    .item {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      border-left: 4px solid #667eea;
+    }
+    
+    .item h3 {
+      color: #333;
+      margin-bottom: 8px;
+    }
+    
+    .item p {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    
+    .item-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .btn-delete {
+      background: #e74c3c;
+      padding: 8px 16px;
+      font-size: 12px;
+    }
+    
+    .btn-delete:hover {
+      box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+    }
+    
+    .success-msg {
+      background: #2ecc71;
+      color: white;
+      padding: 12px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    
+    .success-msg.show {
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+      
+      .section {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+      }
+      
+      .section:last-child {
+        border-bottom: none;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <div class="header">
+      <h1>🌾 BULMUCOS Admin Panel</h1>
+      <p>Manage Updates & Products</p>
+    </div>
+    
+    <div class="content">
+      <!-- Updates Section -->
+      <div class="section">
+        <h2>📰 Updates</h2>
+        <div class="success-msg" id="updates-success">Update added successfully!</div>
+        
+        <div class="form-group">
+          <label for="update-title">Title</label>
+          <input type="text" id="update-title" placeholder="Enter update title">
+        </div>
+        
+        <div class="form-group">
+          <label for="update-content">Description</label>
+          <textarea id="update-content" placeholder="Enter update description"></textarea>
+        </div>
+        
+        <button onclick="addUpdate()">Add Update</button>
+        
+        <div class="items-list" id="updates-list"></div>
+      </div>
+      
+      <!-- Products Section -->
+      <div class="section">
+        <h2>🛍️ Products</h2>
+        <div class="success-msg" id="products-success">Product added successfully!</div>
+        
+        <div class="form-group">
+          <label for="product-name">Product Name</label>
+          <input type="text" id="product-name" placeholder="Enter product name">
+        </div>
+        
+        <div class="form-group">
+          <label for="product-description">Description</label>
+          <textarea id="product-description" placeholder="Enter product description"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="product-image">Image URL</label>
+          <input type="text" id="product-image" placeholder="e.g., /images/coffee.png">
+        </div>
+        
+        <button onclick="addProduct()">Add Product</button>
+        
+        <div class="items-list" id="products-list"></div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Load data from localStorage
+    function loadData() {
+      renderUpdates();
+      renderProducts();
+    }
+    
+    // Add Update
+    function addUpdate() {
+      const title = document.getElementById('update-title').value.trim();
+      const content = document.getElementById('update-content').value.trim();
+      
+      if (!title || !content) {
+        alert('Please fill in all fields');
+        return;
+      }
+      
+      const updates = JSON.parse(localStorage.getItem('bulmucos_updates') || '[]');
+      updates.unshift({
+        id: Date.now(),
+        title,
+        content,
+        date: new Date().toLocaleDateString()
+      });
+      
+      localStorage.setItem('bulmucos_updates', JSON.stringify(updates));
+      
+      // Show success message
+      const msg = document.getElementById('updates-success');
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 3000);
+      
+      // Clear form
+      document.getElementById('update-title').value = '';
+      document.getElementById('update-content').value = '';
+      
+      renderUpdates();
+    }
+    
+    // Delete Update
+    function deleteUpdate(id) {
+      if (confirm('Are you sure?')) {
+        const updates = JSON.parse(localStorage.getItem('bulmucos_updates') || '[]');
+        const filtered = updates.filter(u => u.id !== id);
+        localStorage.setItem('bulmucos_updates', JSON.stringify(filtered));
+        renderUpdates();
+      }
+    }
+    
+    // Render Updates
+    function renderUpdates() {
+      const updates = JSON.parse(localStorage.getItem('bulmucos_updates') || '[]');
+      const list = document.getElementById('updates-list');
+      
+      if (updates.length === 0) {
+        list.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">No updates yet</p>';
+        return;
+      }
+      
+      list.innerHTML = updates.map(u => `
+        <div class="item">
+          <h3>${u.title}</h3>
+          <p>${u.content}</p>
+          <p style="font-size: 12px; color: #999;">${u.date}</p>
+          <div class="item-actions">
+            <button class="btn-delete" onclick="deleteUpdate(${u.id})">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // Add Product
+    function addProduct() {
+      const name = document.getElementById('product-name').value.trim();
+      const description = document.getElementById('product-description').value.trim();
+      const image = document.getElementById('product-image').value.trim();
+      
+      if (!name || !description || !image) {
+        alert('Please fill in all fields');
+        return;
+      }
+      
+      const products = JSON.parse(localStorage.getItem('bulmucos_products') || '[]');
+      products.unshift({
+        id: Date.now(),
+        name,
+        description,
+        image
+      });
+      
+      localStorage.setItem('bulmucos_products', JSON.stringify(products));
+      
+      // Show success message
+      const msg = document.getElementById('products-success');
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 3000);
+      
+      // Clear form
+      document.getElementById('product-name').value = '';
+      document.getElementById('product-description').value = '';
+      document.getElementById('product-image').value = '';
+      
+      renderProducts();
+    }
+    
+    // Delete Product
+    function deleteProduct(id) {
+      if (confirm('Are you sure?')) {
+        const products = JSON.parse(localStorage.getItem('bulmucos_products') || '[]');
+        const filtered = products.filter(p => p.id !== id);
+        localStorage.setItem('bulmucos_products', JSON.stringify(filtered));
+        renderProducts();
+      }
+    }
+    
+    // Render Products
+    function renderProducts() {
+      const products = JSON.parse(localStorage.getItem('bulmucos_products') || '[]');
+      const list = document.getElementById('products-list');
+      
+      if (products.length === 0) {
+        list.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">No products yet</p>';
+        return;
+      }
+      
+      list.innerHTML = products.map(p => `
+        <div class="item">
+          <h3>${p.name}</h3>
+          <p>${p.description}</p>
+          <div class="item-actions">
+            <button class="btn-delete" onclick="deleteProduct(${p.id})">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // Initialize on page load
+    window.addEventListener('load', loadData);
+  </script>
 </body>
 </html>
