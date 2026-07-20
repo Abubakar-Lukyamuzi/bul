@@ -1,0 +1,29 @@
+# Jekyll configuration for GitHub Pages + Netlify CMS
+
+# Site settings
+title: BULMUCOS
+description: Production For Export - Bukoto Lwengo Multipurpose Cooperative Society
+url: "https://Abubakar-Lukyamuzi.github.io/bul"
+
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
+
+# Exclude files from the build
+exclude:
+  - admin
+  - node_modules
+  - vendor
+
+# Collections for Netlify CMS
+collections:
+  products:
+    output: true
+    permalink: /products/:path/
+  gallery:
+    output: true
+    permalink: /gallery/:path/
+  updates:
+    output: true
+    permalink: /updates/:path/
