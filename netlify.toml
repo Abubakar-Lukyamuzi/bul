@@ -1,0 +1,10 @@
+# Netlify configuration
+[build]
+  command = "echo 'Static site - no build needed'"
+  publish = "."
+
+# Redirect /admin to Netlify CMS
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 200
