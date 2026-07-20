@@ -3,15 +3,6 @@
   command = "echo 'Static site - no build needed'"
   publish = "."
 
-# Disable framework detection
-[build.environment]
-  NETLIFY_SKIP_AUTO_BUILD = "true"
-
-# Context settings
-[context.production]
-  command = "echo 'Static site - no build needed'"
-  publish = "."
-
 # Redirect /admin to Netlify CMS
 [[redirects]]
   from = "/admin"
