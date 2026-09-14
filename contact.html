@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact BULMUCOS</title>
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
 
@@ -27,13 +27,17 @@
   <h2>Contact Us</h2>
   <p>We would love to hear from you. Reach us directly through phone, WhatsApp or email.</p>
 
-  <div style="margin: 25px 0;">
+  <div class="contact-details">
     <p><strong>Phone:</strong> <a href="tel:+256754575774">+256 754 575 774 / 0772575774</a></p>
     <p><strong>WhatsApp:</strong> <a href="https://wa.me/256772575774">+256 772 575 774</a></p>
     <p><strong>Email:</strong> <a href="mailto:bukotolwengomcoopsociety@gmail.com">bukotolwengomcoopsociety@gmail.com</a></p>
   </div>
 
-  <form action="mailto:bukotolwengomcoopsociety@gmail.com" method="post" enctype="text/plain" class="contact-form">
+  <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form">
+    <input type="hidden" name="form-name" value="contact">
+    <p style="display:none">
+      <label>Don't fill this out if you're human: <input name="bot-field"></label>
+    </p>
     <input type="text" name="fullname" placeholder="Full Name" required>
     <input type="email" name="email" placeholder="Email Address" required>
     <input type="text" name="phone" placeholder="Phone Number" required>

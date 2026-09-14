@@ -1,1 +1,3 @@
-/contacts.html
+.netlify/
+# Local Netlify folder
+.netlify
