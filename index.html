@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BULMUCOS | Production For Export</title>
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 
 <body>
@@ -48,7 +48,7 @@
   <p>To improve members' income through agri business training, banking and marketing produce through provision of acess to high quality inputs.</p>
   <h3>Purpose</h3>
   <p>To enhance memebrs' income through Value Addition and Marketing of their produce</p><br>
-  <p> <b>Located</b> in <a href="https://maps.app.goo.gl/N4sCuZ757DxDwNqu5" target="_blank">Kyazanga Town Council, Lwengo District, Uganda</a>, BULMUCOS is committed to improving livelihoods through sustainable agriculture and market access.
+  <p> <b>Located</b> in <a href="https://maps.app.goo.gl/N4sCuZ757DxDwNqu5" target="_blank" rel="noopener noreferrer">Kyazanga Town Council, Lwengo District, Uganda</a>, BULMUCOS is committed to improving livelihoods through sustainable agriculture and market access.
   </p>
   
 </section>
@@ -150,7 +150,11 @@
 
 <section class="newsletter">
   <h2>Subscribe For Updates</h2>
-  <form action="mailto:info@bulmucos.org" method="post" enctype="text/plain">
+  <form name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="newsletter">
+    <p style="display:none">
+      <label>Don't fill this out if you're human: <input name="bot-field"></label>
+    </p>
     <input type="email" name="email" placeholder="Enter Your Email" required>
     <button type="submit" name="subscribe">Subscribe</button>
   </form>

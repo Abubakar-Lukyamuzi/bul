@@ -8,3 +8,37 @@
   from = "/admin"
   to = "/admin/index.html"
   status = 200
+
+# Baseline security headers for every page (kept clear of a strict CSP here so
+# the Decap CMS at /admin, which loads its script from unpkg.com and talks to
+# api.github.com, keeps working)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), camera=(), microphone=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+# Strict Content-Security-Policy for the marketing pages only.
+# Explicit paths on purpose (no wildcard): Netlify's glob matching for
+# headers is not reliably scoped to a single path segment, and a wildcard
+# here could accidentally apply this policy to /admin/index.html too, which
+# would break the Decap CMS (it loads its script from unpkg.com and talks to
+# api.github.com).
+[[headers]]
+  for = "/"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+
+[[headers]]
+  for = "/contact.html"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+
